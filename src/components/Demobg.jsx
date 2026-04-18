@@ -3,6 +3,9 @@ import Navbar from "./Navbar";
 import Hero from "./Hero";
 import { GridPattern } from "../grid/BackgroundBoxesDemo";
 import Clients from "./Clients";
+import VideoPortfolio from "./VideoPortfolio";
+import Contact from "../pages/Contact";
+import Footer from "../pages/Footer";
 
 function App() {
   return (
@@ -22,6 +25,9 @@ function App() {
         </div>
         <Hero />
         <Clients />
+        <VideoPortfolio />
+        <Contact />
+        <Footer />
       </div>
 
     </div>
