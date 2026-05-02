@@ -3,7 +3,7 @@ import Button from "./Button";
 
 const Hero = () => {
   return (
-    <section className="relative z-10 flex flex-col items-center justify-center px-4 sm:px-6 pt-24 sm:pt-32 pb-6 sm:pb-8 text-center">
+    <section id="home" className="relative z-10 flex flex-col items-center justify-center px-4 sm:px-6 pt-24 sm:pt-32 pb-6 sm:pb-8 text-center">
 
       {/* Badge */}
       <div className="inline-flex items-center gap-2 mb-6 sm:mb-8 px-3 sm:px-4 py-1.5 rounded-full text-gradient border border-green-500/25 bg-green-500/10 text-green-400 text-xs font-semibold tracking-widest uppercase">
@@ -41,7 +41,7 @@ const Hero = () => {
         />
 
         {/* Secondary */}
-        <a
+        {/* <a
           href="/download"
           className="flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full border border-gray-700 text-sm font-medium text-gray-400 hover:text-white transition-all duration-300 hover:scale-[1.03] bg-transparent hover:bg-green-500/5 w-full xs:w-auto"
         >
@@ -56,7 +56,7 @@ const Hero = () => {
             <polygon points="10 8 16 12 10 16 10 8" fill="currentColor" />
           </svg>
           For Free
-        </a>
+        </a> */}
 
       </div>
 

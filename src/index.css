@@ -17,8 +17,49 @@ body {
     font-family: "Mona Sans", sans-serif;
 }
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+
+}
+
+.navbar .desktop ul li a.active {
+    color: #fff;
+}
+
+.navbar .desktop ul li a.active .underline {
+    width: 100%;
+}
+
+/* Smooth scrolling for the whole page */
+html {
+    scroll-behavior: smooth;
+}
+
 section {
     width: 100dvw;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+.marquee-container:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .text-gradient {

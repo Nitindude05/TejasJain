@@ -6,6 +6,7 @@ import Clients from "./Clients";
 import VideoPortfolio from "./VideoPortfolio";
 import Contact from "../pages/Contact";
 import Footer from "../pages/Footer";
+import ShortVideos from "../pages/ShortVideos";
 
 function App() {
   return (
@@ -23,11 +24,29 @@ function App() {
         <div className="pt-4">
           <Navbar />
         </div>
-        <Hero />
-        <Clients />
-        <VideoPortfolio />
-        <Contact />
-        <Footer />
+         <section id="hero">
+                <Hero />
+            </section>
+
+         <section id="clients">
+                <Clients />
+            </section>
+
+         <section id="Testimonials">
+                <ShortVideos />
+            </section>
+        
+         <section id="video-portfolio">
+                <VideoPortfolio />
+            </section>
+
+         <section id="contact">
+                <Contact />
+            </section>
+
+         <section id="footer">
+                <Footer />
+            </section>
       </div>
 
     </div>
