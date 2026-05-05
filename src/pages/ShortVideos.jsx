@@ -82,11 +82,15 @@ export default function ShortVideos() {
           </span>
           <Flame className="w-4 h-4 text-orange-400 fill-orange-400 animate-pulse" />
         </div>
+        <br/>
 
         {/* Main Heading */}
-        <h2 className="text-5xl md:text-6xl lg:text-7xl font-black mb-4">
+        {/* <h2 className="text-5xl md:text-6xl lg:text-7xl font-black mb-4">
           {SHORT_VIDEOS_SECTION.heading.main}
-        </h2>
+        </h2> */}
+        <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold mb-3 text-gradient bg-clip-text text-transparent">
+          Short Form Content
+        </h2><br/>
         
         <div className="relative inline-block mb-6">
           <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
@@ -225,9 +229,9 @@ export default function ShortVideos() {
                     </div>
 
                     {/* Title */}
-                    <h4 className="text-white font-bold text-base mb-3 line-clamp-2 leading-tight">
+                    {/* <h4 className="text-white font-bold text-base mb-3 line-clamp-2 leading-tight">
                       {video.title}
-                    </h4>
+                    </h4> */}
 
                     {/* Stats */}
                     <div className="flex items-center gap-4 mb-4">

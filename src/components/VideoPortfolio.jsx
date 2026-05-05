@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import { portfolioVideos, CATEGORY_STYLES } from '../constant/constant';
 import { 
   Play, 
-  Eye, 
   Clock, 
   User,
   ExternalLink,
@@ -20,7 +19,7 @@ const VideoPortfolio = () => {
 
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
-      const scrollAmount = 600;
+      const scrollAmount = window.innerWidth < 640 ? 300 : 600;
       scrollContainerRef.current.scrollBy({
         left: direction === 'left' ? -scrollAmount : scrollAmount,
         behavior: 'smooth'
@@ -29,50 +28,57 @@ const VideoPortfolio = () => {
   };
 
   return (
-    <div className="min-h-screen px-5 py-16 md:px-8 lg:px-20">
-      {/* Header */}
-      <div className="text-center mb-12 animate-fadeInDown">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-3 text-gradient bg-clip-text text-transparent">
-          Video Portfolio
+    <div className="min-h-screen px-4 sm:px-6 md:px-8 lg:px-20 py-10 sm:py-12 md:py-16">
+
+      {/* ── Header ── */}
+      <div className="text-center mb-8 sm:mb-10 md:mb-12">
+        <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold mb-3 text-gradient bg-clip-text text-transparent">
+          Long Form Video 
         </h1>
-        <p className="text-lg md:text-xl text-gray-400 font-light">
+        <p className="text-sm sm:text-base md:text-xl text-gray-400">
           Crafting stories through visual excellence
         </p>
       </div>
 
-      {/* Navigation Buttons */}
-      <div className="max-w-[1800px] mx-auto mb-8 flex items-center justify-between">
+      {/* ── Navigation ── */}
+      <div className="max-w-[1800px] mx-auto mb-6 sm:mb-8 flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-white">Featured Projects</h2>
-          <p className="text-gray-400 text-sm mt-1">Click any video to watch on YouTube</p>
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white">
+            Featured Projects
+          </h2>
+          <p className="text-gray-400 text-xs sm:text-sm mt-1">
+            Click any video to watch
+          </p>
         </div>
         
-        <div className="flex gap-3">
+        <div className="flex gap-2 sm:gap-3">
           <button
             onClick={() => scroll('left')}
-            className="w-12 h-12 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 backdrop-blur-sm text-gray-300 flex items-center justify-center transition-all duration-300 hover:scale-110"
+            className="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-white/5 border border-white/10 text-gray-300 flex items-center justify-center sm:hover:scale-110 transition"
           >
-            <ChevronLeft size={20} />
+            <ChevronLeft size={18} />
           </button>
+
           <button
             onClick={() => scroll('right')}
-            className="w-12 h-12 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 backdrop-blur-sm text-gray-300 flex items-center justify-center transition-all duration-300 hover:scale-110"
+            className="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-white/5 border border-white/10 text-gray-300 flex items-center justify-center sm:hover:scale-110 transition"
           >
-            <ChevronRight size={20} />
+            <ChevronRight size={18} />
           </button>
         </div>
       </div>
 
-      {/* Horizontal Scrolling Videos */}
+      {/* ── Scroll Container ── */}
       <div 
         ref={scrollContainerRef}
-        className="relative overflow-x-auto overflow-y-hidden pb-8 scrollbar-hide"
+        className="relative overflow-x-auto overflow-y-hidden pb-6 sm:pb-8 scrollbar-hide"
       >
-        {/* Gradient Overlays */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-950 via-gray-950/80 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-950 via-gray-950/80 to-transparent z-10 pointer-events-none" />
+        {/* Gradients (hidden on small screens) */}
+        <div className="hidden sm:block absolute left-0 top-0 bottom-0 w-24 md:w-32 bg-gradient-to-r from-gray-950 to-transparent z-10 pointer-events-none" />
+        <div className="hidden sm:block absolute right-0 top-0 bottom-0 w-24 md:w-32 bg-gradient-to-l from-gray-950 to-transparent z-10 pointer-events-none" />
 
-        <div className="flex gap-8 px-4">
+        <div className="flex gap-4 sm:gap-6 md:gap-8 px-2 sm:px-4">
+
           {portfolioVideos.map((video, index) => {
             const categoryStyle = CATEGORY_STYLES[video.category] || CATEGORY_STYLES.Corporate;
             const isHovered = hoveredId === video.id;
@@ -80,128 +86,81 @@ const VideoPortfolio = () => {
             return (
               <div
                 key={video.id}
-                className="group relative flex-shrink-0 w-[500px] cursor-pointer animate-fadeInUp"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                className="group relative flex-shrink-0 cursor-pointer"
+                style={{
+                  width: '85vw',         // ✅ mobile
+                  maxWidth: '500px'      // ✅ desktop cap
+                }}
                 onMouseEnter={() => setHoveredId(video.id)}
                 onMouseLeave={() => setHoveredId(null)}
                 onClick={() => openYouTube(video.videoUrl)}
               >
                 <div className={`
-                  relative h-[320px] rounded-3xl overflow-hidden
+                  relative h-[220px] sm:h-[260px] md:h-[320px] 
+                  rounded-2xl sm:rounded-3xl overflow-hidden
                   border border-white/10
-                  transition-all duration-500 ease-out
-                  ${isHovered ? `scale-105 shadow-2xl ${categoryStyle.glow} border-white/30` : 'shadow-xl shadow-black/50'}
+                  transition-all duration-500
+                  ${isHovered ? 'sm:scale-105 sm:shadow-2xl border-white/30' : 'shadow-xl'}
                 `}>
+                  
                   {/* Thumbnail */}
                   <img
                     src={video.thumbnail}
                     alt={video.title}
-                    className={`w-full h-full object-cover transition-all duration-700 ${isHovered ? 'scale-110' : 'scale-100'}`}
+                    className={`w-full h-full object-cover transition duration-700 ${isHovered ? 'sm:scale-110' : ''}`}
                   />
 
-                  {/* Gradient Overlay */}
+                  {/* Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black/90" />
 
                   {/* Top Bar */}
-                  <div className="absolute top-0 left-0 right-0 p-6 flex items-start justify-between z-20">
-                    {/* Category Badge */}
-                    <div className={`px-4 py-2 rounded-full backdrop-blur-md border ${categoryStyle.badge}`}>
-                      <span className="text-sm font-bold">{video.category}</span>
+                  <div className="absolute top-0 left-0 right-0 p-3 sm:p-4 md:p-6 flex justify-between">
+                    <div className={`px-2 sm:px-3 py-1 rounded-full backdrop-blur border text-xs sm:text-sm ${categoryStyle.badge}`}>
+                      {video.category}
                     </div>
 
-                    {/* Duration Badge */}
-                    <div className="px-4 py-2 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-white" />
-                      <span className="text-sm font-bold text-white">{video.duration}</span>
+                    <div className="px-2 sm:px-3 py-1 rounded-full bg-black/60 border border-white/20 flex items-center gap-1 text-xs sm:text-sm">
+                      <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
+                      {video.duration}
                     </div>
                   </div>
 
-                  {/* Play Button Overlay */}
-                  <div className={`
-                    absolute inset-0 flex items-center justify-center
-                    transition-all duration-500
-                    ${isHovered ? 'opacity-100' : 'opacity-0'}
-                  `}>
+                  {/* Play button (always visible on mobile) */}
+                  <div className="absolute inset-0 flex items-center justify-center">
                     <div className={`
-                      w-24 h-24 rounded-full 
-                      bg-gradient-to-r ${categoryStyle.gradient} 
-                      flex items-center justify-center 
-                      shadow-2xl animate-pulse
-                      transition-transform duration-300
-                      group-hover:scale-110
+                      w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24
+                      rounded-full bg-gradient-to-r ${categoryStyle.gradient}
+                      flex items-center justify-center shadow-lg
+                      sm:opacity-0 sm:group-hover:opacity-100 transition
                     `}>
-                      <Play className="w-12 h-12 text-white fill-white ml-2" />
-                    </div>
-                  </div>
-
-                  {/* External Link Icon */}
-                  <div className={`
-                    absolute top-6 right-6
-                    transition-all duration-500
-                    ${isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'}
-                  `}>
-                    <div className="w-10 h-10 rounded-full bg-red-500/90 backdrop-blur-md flex items-center justify-center shadow-lg shadow-red-500/50">
-                      <ExternalLink className="w-5 h-5 text-white" />
+                      <Play className="w-6 h-6 sm:w-10 sm:h-10 text-white fill-white ml-1" />
                     </div>
                   </div>
 
                   {/* Bottom Info */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                    <h4 className="text-white font-black text-xl mb-3 line-clamp-2 leading-tight group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-pink-400 group-hover:bg-clip-text transition-all">
-                      {video.title}
-                    </h4>
-
-                    <p className="text-gray-400 text-sm mb-4 flex items-center gap-2">
-                      <User className="w-4 h-4" />
-                      Client: <span className="text-white font-semibold">{video.client}</span>
+                  <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 md:p-6">
+                    <p className="text-xs sm:text-sm text-gray-400 flex items-center gap-1">
+                      <User className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span className="text-white font-semibold">{video.client}</span>
                     </p>
-
-                    <div className="flex items-center gap-6 mb-4">
-                      {/* <div className="flex items-center gap-2">
-                        <Eye className="w-5 h-5 text-gray-400" />
-                        <span className="text-sm font-bold text-white">{video.views}</span>
-                      </div> */}
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-5 h-5 text-gray-400" />
-                        <span className="text-sm font-bold text-white">{video.duration}</span>
-                      </div>
-                    </div>
-
-                    {/* Watch on YouTube Button */}
-                    {/* <div className={`
-                      transition-all duration-500 transform
-                      ${isHovered ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}
-                    `}>
-                      <div className={`
-                        inline-flex items-center gap-2 
-                        px-6 py-3 rounded-xl 
-                        bg-gradient-to-r from-red-500 to-red-600
-                        text-white font-bold text-sm
-                        shadow-lg shadow-red-500/50
-                        hover:from-red-600 hover:to-red-700
-                        transition-all duration-300
-                      `}>
-                        <Play className="w-5 h-5 fill-white" />
-                        <span>Watch on YouTube</span>
-                        <ExternalLink className="w-4 h-4" />
-                      </div>
-                    </div> */}
                   </div>
                 </div>
 
-                {/* Glow Effect */}
+                {/* Glow (desktop only) */}
                 <div className={`
-                  absolute inset-0 rounded-3xl bg-gradient-to-r ${categoryStyle.gradient} opacity-0 blur-2xl -z-10
+                  hidden sm:block absolute inset-0 rounded-3xl blur-2xl -z-10
+                  bg-gradient-to-r ${categoryStyle.gradient}
                   transition-opacity duration-500
                   ${isHovered ? 'opacity-40' : 'opacity-0'}
-                `} />
+                `}/>
               </div>
             );
           })}
+
         </div>
       </div>
 
-      {/* CSS for hiding scrollbar */}
+      {/* Hide Scrollbar */}
       <style jsx>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;

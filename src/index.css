@@ -199,9 +199,9 @@ section {
             .inner {
                 @apply px-5 py-2 rounded-lg bg-gradient-to-br from-[#86F1FC] to-[#000BDB] text-black group-hover:bg-black-50 transition-colors duration-300;
 
-                span {
+                /* span {
                     @apply group-hover:text-white transition-colors duration-300;
-                }
+                } */
             }
         }
     }

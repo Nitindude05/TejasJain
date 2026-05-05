@@ -1,40 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CLIENTS, PLATFORM_STYLES, CLIENTS_SECTION } from '../constant/constant';
 import {
   ChevronLeft,
   ChevronRight,
   Star,
-  TrendingUp,
   CheckCircle,
   ExternalLink,
 } from 'lucide-react';
 
-const VISIBLE = 4;
-
 export default function Clients() {
   const [current, setCurrent] = useState(0);
-  const [hoveredCard, setHoveredCard] = useState(null);
-  const maxIndex = CLIENTS.length - VISIBLE;
+  const [visibleCount, setVisibleCount] = useState(4);
 
-  // Duplicate clients for seamless loop
-  // We need enough copies so the content is wider than the viewport
-  const doubled = [...CLIENTS, ...CLIENTS];
+  // Responsive logic for the slider
+  useEffect(() => {
+    const updateVisible = () => {
+      if (window.innerWidth < 640) setVisibleCount(1.2);
+      else if (window.innerWidth < 1024) setVisibleCount(2);
+      else setVisibleCount(4);
+    };
+    updateVisible();
+    window.addEventListener('resize', updateVisible);
+    return () => window.removeEventListener('resize', updateVisible);
+  }, []);
 
+  const maxIndex = Math.max(0, CLIENTS.length - Math.floor(visibleCount));
   const prev = () => setCurrent((i) => Math.max(i - 1, 0));
   const next = () => setCurrent((i) => Math.min(i + 1, maxIndex));
 
-  const handlePlatformClick = (e, platformLink) => {
-    e.stopPropagation();
-    if (platformLink) {
-      window.open(platformLink, '_blank', 'noopener,noreferrer');
-    }
-  };
-
   return (
-    <section id="clients" className="py-20 px-6 max-w-7xl mx-auto relative overflow-hidden">
+    <section id="clients" className="py-12 md:py-20 px-4 md:px-6 max-w-7xl mx-auto relative overflow-hidden">
+      
+      {/* ── Enhanced CSS Animations ── */}
+      <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+          display: flex;
+          width: max-content;
+          animation: marquee 40s linear infinite;
+        }
+        /* Pause marquee on hover */
+        .marquee-wrapper:hover .animate-marquee {
+          animation-play-state: paused;
+        }
+      `}</style>
 
       {/* ── Heading ── */}
-      <div className="text-center mb-16 relative z-10 animate-fadeInDown">
+      <div className="text-center mb-12 relative z-10">
         <div className="inline-flex items-center gap-2 mb-4">
           <Star className="w-5 h-5 text-yellow-500 fill-yellow-500 animate-pulse" />
           <p className="text-sm uppercase tracking-[0.3em] text-gray-400 font-semibold">
@@ -60,292 +75,97 @@ export default function Clients() {
         </p>
       </div>
 
-      {/* ═══════════════════════════════════════════ */}
-      {/* ── MARQUEE — This is what gets animated ── */}
-      {/* ═══════════════════════════════════════════ */}
-      <div
-  className="relative overflow-hidden mb-16 py-4
-    before:absolute before:left-0 before:top-0 before:bottom-0 before:w-32
-    before:bg-gradient-to-r before:from-gray-950 before:via-gray-950/80 before:to-transparent before:z-10
-    after:absolute after:right-0 after:top-0 after:bottom-0 after:w-32
-    after:bg-gradient-to-l after:from-gray-950 after:via-gray-950/80 after:to-transparent after:z-10"
->
-  <div className="group">
-    <div className="marquee-container">
-      <div className="marquee-track">
-        {[...CLIENTS, ...CLIENTS].map((client, i) => {
-          const style = PLATFORM_STYLES[client.platform] || {
-            avatar: 'bg-gray-800 text-gray-300',
-            badge: 'bg-gray-800 text-gray-300',
-          };
-
-          return (
+      {/* ── MARQUEE (Clickable & Pause on Hover) ── */}
+      <div className="marquee-wrapper relative overflow-hidden mb-20 py-4 group
+        before:absolute before:left-0 before:top-0 before:bottom-0 before:w-20 md:before:w-40 before:bg-gradient-to-r before:from-gray-950 before:to-transparent before:z-10
+        after:absolute after:right-0 after:top-0 after:bottom-0 after:w-20 md:after:w-40 after:bg-gradient-to-l after:from-gray-950 after:to-transparent after:z-10">
+        
+        <div className="animate-marquee gap-4 md:gap-8">
+          {[...CLIENTS, ...CLIENTS].map((client, i) => (
             <a
               href={client.platformLink}
               target="_blank"
               rel="noopener noreferrer"
-              key={`${client.id}-marquee-${i}`}
-              className="group flex items-center gap-3 bg-gradient-to-r from-gray-900/90 to-gray-800/90 backdrop-blur-sm border border-gray-700/50 rounded-full pl-2 pr-5 py-2 shrink-0 hover:border-gray-500/50 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gray-900/50 cursor-pointer"
-              onClick={(e) => e.stopPropagation()}
+              key={`${client.id}-mq-${i}`}
+              className="flex items-center gap-3 bg-white/5 border border-white/10 hover:border-blue-500/50 hover:bg-white/10 backdrop-blur-sm rounded-full pl-2 pr-5 py-2 transition-all duration-300 group/item"
             >
-              {/* Avatar */}
-              <div className="relative w-10 h-10 rounded-full overflow-hidden ring-2 ring-offset-2 ring-offset-gray-900 ring-gray-700/50 group-hover:ring-gray-500/50 transition-all duration-300 flex-shrink-0">
-                {client.photo ? (
-                  <>
-                    <img
-                      src={client.photo}
-                      alt={client.name}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                    />
-                    <div
-                      className={`absolute inset-0 ${style.avatar} opacity-0 group-hover:opacity-20 transition-opacity duration-300`}
-                    />
-                  </>
-                ) : (
-                  <div
-                    className={`w-full h-full flex items-center justify-center text-xs font-bold ${style.avatar}`}
-                  >
-                    {client.initials}
-                  </div>
-                )}
-
-                <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-900 shadow-lg shadow-green-500/50">
-                  <div className="w-full h-full bg-green-400 rounded-full animate-ping opacity-75" />
-                </div>
-
-                {client.verified && (
-                  <CheckCircle className="absolute -top-1 -right-1 w-4 h-4 text-blue-400 fill-blue-400 bg-gray-900 rounded-full" />
-                )}
+              <div className="w-8 h-8 rounded-full overflow-hidden ring-1 ring-white/20 group-hover/item:ring-blue-400 transition-all">
+                <img src={client.photo} alt="" className="w-full h-full object-cover" />
               </div>
-
-              {/* Info */}
-              <div className="flex flex-col gap-0.5">
-                <span className="text-sm font-semibold text-gray-200 group-hover:text-white whitespace-nowrap">
-                  {client.name}
-                </span>
-                <span className="text-xs text-gray-500 group-hover:text-gray-400 flex items-center gap-1 whitespace-nowrap">
-                  <TrendingUp className="w-3 h-3" />
-                  <span>{client.platform}</span>
-                  {client.followers && (
-                    <>
-                      <span className="text-gray-600">•</span>
-                      <span>{client.followers}</span>
-                    </>
-                  )}
-                </span>
-              </div>
-
-              {/* Dot + icon */}
-              <div className="ml-2 flex items-center gap-1">
-                <div
-                  className={`w-2 h-2 rounded-full ${
-                    style.avatar.split(' ')[1]
-                  } animate-pulse`}
-                />
-                <ExternalLink className="w-3 h-3 text-gray-500 group-hover:text-gray-300 opacity-0 group-hover:opacity-100 transition-all duration-300" />
-              </div>
+              <span className="text-sm font-medium text-gray-300 group-hover/item:text-white">{client.name}</span>
+              <ExternalLink size={12} className="text-gray-500 group-hover/item:text-blue-400 transition-colors" />
             </a>
-          );
-        })}
+          ))}
+        </div>
       </div>
-    </div>
-  </div>
-</div>
 
-
-      {/* ═══════════════════════════════════ */}
-      {/* ── SLIDER SECTION (unchanged) ──  */}
-      {/* ═══════════════════════════════════ */}
+      {/* ── SLIDER SECTION ── */}
       <div className="relative z-10">
-        {/* Section Header with Nav */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-end justify-between mb-8">
           <div>
-            <h3 className="text-2xl font-bold text-gray-100 mb-1">
-              Featured Creators
-            </h3>
-            <p className="text-gray-400 text-sm">
-              Meet some of our amazing clients - Click to visit their channels
-            </p>
+            <h3 className="text-xl md:text-2xl font-bold text-white">Featured Portfolio</h3>
+            <p className="text-gray-400 text-sm">Real creators. Real results.</p>
           </div>
-
-          <div className="flex gap-3">
-            <button
-              onClick={prev}
-              disabled={current === 0}
-              className="group w-12 h-12 rounded-full border border-gray-700 bg-gray-900/80 backdrop-blur-sm text-gray-300 flex items-center justify-center hover:bg-gray-800 hover:border-gray-500 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:scale-110 active:scale-95"
-            >
-              <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
-            </button>
-            <button
-              onClick={next}
-              disabled={current >= maxIndex}
-              className="group w-12 h-12 rounded-full border border-gray-700 bg-gray-900/80 backdrop-blur-sm text-gray-300 flex items-center justify-center hover:bg-gray-800 hover:border-gray-500 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:scale-110 active:scale-95"
-            >
-              <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
-            </button>
+          <div className="flex gap-2">
+            <button onClick={prev} disabled={current === 0} className="w-10 h-10 rounded-full border border-gray-800 bg-gray-900 text-white flex items-center justify-center hover:bg-gray-800 disabled:opacity-20 transition-colors"><ChevronLeft size={20}/></button>
+            <button onClick={next} disabled={current >= maxIndex} className="w-10 h-10 rounded-full border border-gray-800 bg-gray-900 text-white flex items-center justify-center hover:bg-gray-800 disabled:opacity-20 transition-colors"><ChevronRight size={20}/></button>
           </div>
         </div>
 
-        {/* Cards Container */}
-        <div className="overflow-hidden relative rounded-2xl">
-          <div className="absolute inset-0 bg-gradient-to-b from-white/5 via-transparent to-white/5 pointer-events-none z-10" />
-
-          <div
-            className="flex gap-6 transition-transform duration-500 ease-out py-2"
-            style={{
-              transform: `translateX(calc(-${current} * (100% / ${VISIBLE} + 24px)))`,
-            }}
+        <div className="overflow-hidden">
+          <div 
+            className="flex gap-4 md:gap-6 transition-transform duration-700 cubic-bezier(0.4, 0, 0.2, 1)"
+            style={{ transform: `translateX(calc(-${current} * (100% / ${visibleCount} + 1.5rem)))` }}
           >
-            {CLIENTS.map((client, i) => {
-              const style = PLATFORM_STYLES[client.platform] || {
-                avatar: 'bg-gray-800 text-gray-300',
-                badge: 'bg-gray-800 text-gray-300',
-                glow: 'hover:shadow-gray-500/20',
-              };
-
-              const isHovered = hoveredCard === i;
-
+            {CLIENTS.map((client) => {
+              const style = PLATFORM_STYLES[client.platform] || { badge: 'bg-gray-800 text-gray-300' };
               return (
-                <div
+                <a
                   key={client.id}
-                  onMouseEnter={() => setHoveredCard(i)}
-                  onMouseLeave={() => setHoveredCard(null)}
-                  onClick={(e) =>
-                    handlePlatformClick(e, client.platformLink)
-                  }
-                  className={`
-                    group relative
-                    bg-gradient-to-br from-white/10 via-white/5 to-transparent
-                    backdrop-blur-xl
-                    border border-white/10
-                    rounded-2xl p-6
-                    flex flex-col items-center text-center gap-4
-                    shrink-0 cursor-pointer
-                    transition-all duration-500 ease-out
-                    hover:scale-105 hover:border-white/30
-                    hover:shadow-2xl ${style.glow}
-                    ${isHovered ? 'z-20 -translate-y-2' : 'z-10'}
-                  `}
-                  style={{
-                    width: `calc(100% / ${VISIBLE} - 18px)`,
-                    animationDelay: `${i * 0.1}s`,
-                  }}
+                  href={client.platformLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative bg-gradient-to-b from-white/10 to-transparent border border-white/10 rounded-2xl p-6 flex flex-col items-center text-center shrink-0 transition-all duration-500 hover:-translate-y-2 hover:border-blue-500/40 hover:shadow-[0_20px_50px_rgba(139,92,246,0.15)]"
+                  style={{ width: `calc(100% / ${visibleCount} - 1.25rem)` }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/0 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
+                  {/* Subtle Glow Background Effect */}
+                  <div className="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
 
-                  <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
-                    <ExternalLink className="w-4 h-4 text-white" />
-                  </div>
-
-                  <div className="relative z-10 w-full">
-                    <div className="relative mx-auto w-20 h-20 mb-2">
-                      <div className="relative w-full h-full rounded-full overflow-hidden ring-4 ring-offset-4 ring-offset-gray-900 ring-white/10 group-hover:ring-white/30 transition-all duration-500">
-                        {client.photo ? (
-                          <>
-                            <img
-                              src={client.photo}
-                              alt={client.name}
-                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
-                            />
-                            <div
-                              className={`absolute inset-0 ${style.avatar} opacity-0 group-hover:opacity-20 transition-opacity duration-500`}
-                            />
-                          </>
-                        ) : (
-                          <div
-                            className={`w-full h-full flex items-center justify-center text-2xl font-bold ${style.avatar} transition-all duration-500 group-hover:scale-110 group-hover:rotate-3`}
-                          >
-                            {client.initials}
-                          </div>
-                        )}
-                      </div>
-
-                      {client.verified && (
-                        <CheckCircle className="absolute -top-1 -right-1 w-6 h-6 text-blue-400 fill-blue-400 bg-gray-900 rounded-full p-0.5 shadow-lg" />
-                      )}
-
-                      <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-gray-900 shadow-lg shadow-green-500/50">
-                        <div className="w-full h-full bg-green-400 rounded-full animate-ping opacity-75" />
-                      </div>
-                    </div>
-
-                    <p className="text-base font-semibold text-gray-100 group-hover:text-white transition-colors mb-1">
-                      {client.name}
-                    </p>
-
-                    {client.category && (
-                      <p className="text-xs text-gray-500 group-hover:text-gray-400 transition-colors mb-2">
-                        {client.category}
-                      </p>
+                  <div className="relative w-20 h-20 mb-4">
+                    <img 
+                      src={client.photo} 
+                      className="w-full h-full rounded-full object-cover ring-4 ring-white/5 group-hover:ring-blue-500/30 transition-all duration-500 group-hover:scale-110" 
+                      alt={client.name} 
+                    />
+                    {client.verified && (
+                      <CheckCircle className="absolute -top-1 -right-1 w-6 h-6 text-blue-400 bg-gray-950 rounded-full p-0.5" />
                     )}
-
-                    <span
-                      className={`inline-flex items-center gap-1.5 text-xs font-medium px-4 py-1.5 rounded-full ${style.badge} transition-all duration-300 group-hover:scale-105`}
-                    >
-                      <div className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
-                      {client.platform}
-                    </span>
-
-                    <div className="mt-4 pt-4 border-t border-white/10 flex justify-around text-xs text-gray-400 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
-                      <div className="text-center">
-                        <div className="font-bold text-gray-200">
-                          {client.followers || '250K+'}
-                        </div>
-                        <div className="text-gray-500">Followers</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="font-bold text-gray-200">
-                          {client.videos || '100+'}
-                        </div>
-                        <div className="text-gray-500">Videos</div>
-                      </div>
+                  </div>
+                  
+                  <h4 className="text-lg font-bold text-white mb-1 group-hover:text-blue-300 transition-colors">{client.name}</h4>
+                  <span className={`text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4 ${style.badge}`}>
+                    {client.platform}
+                  </span>
+                  
+                  <div className="grid grid-cols-2 gap-4 w-full pt-4 border-t border-white/10">
+                    <div>
+                      <div className="text-sm font-bold text-white">{client.followers || '250K+'}</div>
+                      <div className="text-[10px] text-gray-500 uppercase">Followers</div>
                     </div>
-
-                    <div className="mt-4 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
-                      <div className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-bold flex items-center justify-center gap-2 hover:scale-105 transition-transform border border-white/10">
-                        <span>Visit Channel</span>
-                        <ExternalLink className="w-3 h-3" />
-                      </div>
+                    <div>
+                      <div className="text-sm font-bold text-white">{client.videos || '100+'}</div>
+                      <div className="text-[10px] text-gray-500 uppercase">Videos</div>
                     </div>
                   </div>
 
-                  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-white/10 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                </div>
+                  {/* Visit Label - appears on hover */}
+                  <div className="mt-4 flex items-center gap-2 text-xs font-semibold text-blue-400 opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
+                    Visit Channel <ExternalLink size={12} />
+                  </div>
+                </a>
               );
             })}
           </div>
-        </div>
-
-        {/* Progress Dots */}
-        <div className="flex justify-center items-center gap-2 mt-8">
-          {Array.from({ length: maxIndex + 1 }, (_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrent(i)}
-              className={`
-                transition-all duration-300 rounded-full
-                ${
-                  i === current
-                    ? 'w-8 h-2 bg-gradient-to-r from-purple-500 to-indigo-500'
-                    : 'w-2 h-2 bg-gray-700 hover:bg-gray-500'
-                }
-              `}
-              aria-label={`Go to slide ${i + 1}`}
-            />
-          ))}
-        </div>
-
-        <div className="text-center mt-6">
-          <p className="text-sm text-gray-500">
-            Showing{' '}
-            <span className="text-gray-300 font-semibold">
-              {current + 1}
-            </span>{' '}
-            of{' '}
-            <span className="text-gray-300 font-semibold">
-              {maxIndex + 1}
-            </span>
-          </p>
         </div>
       </div>
     </section>

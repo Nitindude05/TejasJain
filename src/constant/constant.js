@@ -516,7 +516,7 @@ export const SHORT_VIDEOS = [
     id: 5,
     title: "First episode of Outlier ",
     videoUrl: "https://www.instagram.com/p/DLZMegVJm2o/",
-    thumbnail: "/shorts/Outliner1.png",
+    thumbnail: "/shorts/Outliner.jpg",
     views: "4.1k",
     likes: "545",
     platform: "Instagram Reels",
