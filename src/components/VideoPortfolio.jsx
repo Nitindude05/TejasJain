@@ -74,8 +74,8 @@ const VideoPortfolio = () => {
         className="relative overflow-x-auto overflow-y-hidden pb-6 sm:pb-8 scrollbar-hide"
       >
         {/* Gradients (hidden on small screens) */}
-        <div className="hidden sm:block absolute left-0 top-0 bottom-0 w-24 md:w-32 bg-gradient-to-r from-gray-950 to-transparent z-10 pointer-events-none" />
-        <div className="hidden sm:block absolute right-0 top-0 bottom-0 w-24 md:w-32 bg-gradient-to-l from-gray-950 to-transparent z-10 pointer-events-none" />
+        {/* <div className="hidden sm:block absolute left-0 top-0 bottom-0 w-24 md:w-32 bg-gradient-to-r from-gray-950 to-transparent z-10 pointer-events-none" />
+        <div className="hidden sm:block absolute right-0 top-0 bottom-0 w-24 md:w-32 bg-gradient-to-l from-gray-950 to-transparent z-10 pointer-events-none" /> */}
 
         <div className="flex gap-4 sm:gap-6 md:gap-8 px-2 sm:px-4">
 

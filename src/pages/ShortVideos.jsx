@@ -89,7 +89,7 @@ export default function ShortVideos() {
           {SHORT_VIDEOS_SECTION.heading.main}
         </h2> */}
         <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold mb-3 text-gradient bg-clip-text text-transparent">
-          Short Form Content
+          Short Form Video
         </h2><br/>
         
         <div className="relative inline-block mb-6">
@@ -139,8 +139,8 @@ export default function ShortVideos() {
         }}
       >
         {/* Gradient Overlays */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-950 via-gray-950/80 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-950 via-gray-950/80 to-transparent z-10 pointer-events-none" />
+        {/* <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-950 via-gray-950/80 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-950 via-gray-950/80 to-transparent z-10 pointer-events-none" /> */}
 
         {/* Videos Grid */}
         <div className="flex gap-6 px-4">

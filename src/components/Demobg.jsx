@@ -14,9 +14,9 @@ function App() {
 
       {/* Background */}
       <GridPattern
-        width={60}
-        height={60}
-        className="fill-gray-700/10 stroke-gray-480/20 [mask-image:radial-gradient(900px_circle_at_center,white,transparent)]"
+        width={80}
+        height={80}
+        className="fill-gray-700/10 stroke-gray-480/20"
       />
 
       {/* Main Content */}
@@ -24,29 +24,17 @@ function App() {
         <div className="pt-4">
           <Navbar />
         </div>
-         <section id="hero">
                 <Hero />
-            </section>
 
-         <section id="clients">
                 <Clients />
-            </section>
 
-         <section id="Testimonials">
                 <ShortVideos />
-            </section>
         
-         <section id="video-portfolio">
                 <VideoPortfolio />
-            </section>
 
-         <section id="contact">
                 <Contact />
-            </section>
 
-         <section id="footer">
                 <Footer />
-            </section>
       </div>
 
     </div>

@@ -13,7 +13,7 @@ const Hero = () => {
 
       {/* Heading */}
       <h1 className="font-bold leading-[1.08] text-white tracking-tight max-w-xs sm:max-w-2xl md:max-w-4xl text-[clamp(2rem,7vw,5.5rem)]">
-        Hii, I am{" "}
+        Hi, I am{" "}
         <span className="relative inline-block">
           <span className="relative z-10 text-gradient">Tejas</span>
           .
@@ -25,9 +25,10 @@ const Hero = () => {
 
       {/* Description */}
       <p className="mt-5 sm:mt-7 text-gray-400 leading-relaxed max-w-2xl px-4 text-[clamp(0.9rem,2vw,1.15rem)]">
-        I am a professional video editor with over 4 years of experience, having worked with many creators in both freelance and full-time roles.
+       I’m a professional video editor with 4+ years of experience.
+Through high-quality editing, storytelling, and engaging visuals, I’ve helped generate millions of views across multiple platforms.
         <br />
-        I have helped generate millions of views through high-quality content editing.
+       
       </p>
 
       {/* Buttons */}

@@ -255,9 +255,9 @@ export const portfolioVideos = [
   },
   {
     id: 3,
-    title: "The SHOCKING Truth About Indian AAA Games",
-    videoUrl: "https://www.youtube.com/watch?v=oqxHM7xOEYE",
-    embedUrl: "https://www.youtube.com/watch?v=oqxHM7xOEYE",
+    title: "MASTER Mobile Game Design In JUST 30 Days With EXPERT Tips",
+    videoUrl: "https://www.youtube.com/watch?v=chgn7aEKzvM",
+    embedUrl: "https://www.youtube.com/watch?v=chgn7aEKzvM",
     thumbnail: "/YoutubeThumb/G2M.jpg",
     category: "Educational",
     duration: "13:11",
@@ -434,11 +434,6 @@ const socialImgs = [
         imgPath: "/images/image.png",
     },
     {
-        name: "fb",
-        url: "https://www.facebook.com/",
-        imgPath: "/images/fb.png",
-    },
-    {
         name: "x",
         url: "https://x.com/Anshjain_OG",
         imgPath: "/images/x.png",
@@ -513,7 +508,7 @@ export const SHORT_VIDEOS = [
     category: "Meditation"
   },
   {
-    id: 5,
+    id: 7,
     title: "First episode of Outlier ",
     videoUrl: "https://www.instagram.com/p/DLZMegVJm2o/",
     thumbnail: "/shorts/Outliner.jpg",
@@ -541,7 +536,7 @@ export const SHORT_VIDEOS = [
     category: "Educational"
   },
   {
-    id: 7,
+    id: 5,
     title: "I almost quit content creation",
     videoUrl: "https://www.youtube.com/shorts/S2KiRqVbiXk",
     thumbnail: "https://img.youtube.com/vi/S2KiRqVbiXk/maxresdefault.jpg",
